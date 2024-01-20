@@ -1,0 +1,20 @@
+[
+    {"data_code":"101000","data_name":"서울"},
+    {"data_code":"102000","data_name":"경기"},
+    {"data_code":"108000","data_name":"인천"},
+    {"data_code":"106000","data_name":"부산"},
+    {"data_code":"104000","data_name":"대구"},
+    {"data_code":"103000","data_name":"광주"},
+    {"data_code":"105000","data_name":"대전"},
+    {"data_code":"107000","data_name":"울산"},
+    {"data_code":"118000","data_name":"세종"},
+    {"data_code":"109000","data_name":"강원"},
+    {"data_code":"110000","data_name":"경남"},
+    {"data_code":"111000","data_name":"경북"},
+    {"data_code":"112000","data_name":"전남"},
+    {"data_code":"113000","data_name":"전북"},
+    {"data_code":"115000","data_name":"충남"},
+    {"data_code":"114000","data_name":"충북"},
+    {"data_code":"116000","data_name":"제주"},
+    {"data_code":"117000","data_name":"전국"}
+]
