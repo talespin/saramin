@@ -51,11 +51,10 @@ params = {
 
 
 def saramin_list():
-    os.makedirs('../list', exist_ok=True)
     logging.info('start crawl list saramin')
     #지역별 코드
-    with open('./local_cd.json', encoding='UTF8') as json_file:
-        local_cd = json.load(json_file)		
+    #with open('./local_cd.json', encoding='UTF8') as json_file:
+    #    local_cd = json.load(json_file)		
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -95,6 +94,7 @@ def saramin_list():
         area_cnt.append(dict(id=_domestic, name=js_cnt['area_1depth_domestic_text'][_domestic], cnt=js_cnt['area_1depth_count'][_domestic], page_size=math.ceil(int(js_cnt['area_1depth_count'][_domestic])/page_count)))
     #지역별 페이지 크롤
     for area in area_cnt:
+        params.update({'loc_mcd':area['id']})
         for page in range(1, area['page_size']+1):
             file_name = f'../list/' + area['id'] + f'_{page}'
             params.update({'page':page})
@@ -104,7 +104,7 @@ def saramin_list():
             sleep(5)
             res = session.get(f'{base_url}/zf_user/jobs/list/domestic', params=params, cookies=cookies, headers=headers)
             with open(file_name, 'wt', encoding='utf-8') as fs:
-                fs.write(res.content.decode('utf-8')
+                fs.write(res.content.decode('utf-8'))
     logging.info('crawl list saramin complete')
     #리스트 크롤완료
     logging.info('리스트 생서을 시작합니다.')
