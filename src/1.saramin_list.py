@@ -28,9 +28,6 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup as bs
 
 
-#https://curlconverter.com/
-
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
@@ -78,24 +75,24 @@ def saramin_list():
         'sec-ch-ua-platform': "macOS",
     }
     #세션 및 쿠키생성
-	page_count = 100
+    page_count = 100
     session = req.Session()
     base_url = 'https://www.saramin.co.kr'
     res = session.get(base_url, headers=headers, verify=False)
     cookies = dict(res.cookies)
-	#국내지역 지역별 데이터 건수 구하기
+    #국내지역 지역별 데이터 건수 구하기
     url = f'{base_url}/zf_user/jobs/list/domestic'	
-	res = req.get(url, headers=headers, cookies=cookies, verify=False)
-	doc = bs(res.content, 'html.parser')
-	scripts = doc.find_all('script')
-	script = str([x for x in scripts if str(x).find('area_1depth_count') >= 0][0])
-	ss = [x.strip() for x in script.split('\n') if x.strip().startswith("'options'")][0]
+    res = req.get(url, headers=headers, cookies=cookies, verify=False)
+    doc = bs(res.content, 'html.parser')
+    scripts = doc.find_all('script')
+    script = str([x for x in scripts if str(x).find('area_1depth_count') >= 0][0])
+    ss = [x.strip() for x in script.split('\n') if x.strip().startswith("'options'")][0]
     js_cnt = json.loads(ss.split('//')[0][:-3][15:])
-	area_cnt = []
+    area_cnt = []
     for _domestic in js_cnt['area_1depth_domestic_text']:
-	    print(_domestic, js_cnt['area_1depth_domestic_text'][_domestic], js_cnt['area_1depth_count'][_domestic])
-	    area_cnt.append(dict(id=_domestic, name=js_cnt['area_1depth_domestic_text'][_domestic], cnt=js_cnt['area_1depth_count'][_domestic], page_size=math.ceil(int(js_cnt['area_1depth_count'][_domestic])/page_count)))
-    #지역별 페이지 크롤		
+        print(_domestic, js_cnt['area_1depth_domestic_text'][_domestic], js_cnt['area_1depth_count'][_domestic])
+        area_cnt.append(dict(id=_domestic, name=js_cnt['area_1depth_domestic_text'][_domestic], cnt=js_cnt['area_1depth_count'][_domestic], page_size=math.ceil(int(js_cnt['area_1depth_count'][_domestic])/page_count)))
+    #지역별 페이지 크롤
     for area in area_cnt:
         for page in range(1, area['page_size']+1):
             file_name = f'../list/' + area['id'] + f'_{page}'
