@@ -1,12 +1,29 @@
+#!/usr/bin/python
+"""
+:filename: 3.saramin_crawler.py
+:author: 최종환
+:last update: 2024.01.20
+ 
+:CHANGELOG:
+    ============== ========== ====================================
+    수정일            수정자        수정내용
+    ============== ========== ====================================
+    2024.01.20     bum        최초생성
+    ============== ========== ====================================
+ 
+:desc:
+    saramin site 의 지역별 채용정보 크롤 목록을 이용하여 컨텐츠 크롤
+ 
+"""
 import os
+import json
 import urllib3
-from urllib.parse import urlencode
 import logging
 import pandas as pd
 import requests as req
 from time import sleep
+from urllib.parse import urlencode
 from bs4 import BeautifulSoup as bs
-import json
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
