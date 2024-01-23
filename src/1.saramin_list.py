@@ -51,6 +51,7 @@ params = {
 
 
 def saramin_list():
+    os.makedirs('../list', exist_ok=True)
     logging.info('start crawl list saramin')
     #지역별 코드
     with open('./local_cd.json', encoding='UTF8') as json_file:
