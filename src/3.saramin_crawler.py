@@ -31,6 +31,7 @@ from selenium.webdriver.chrome.options import Options
 
 
 def saram_crawler(list_file:str, overwrite:bool = False):
+    os.makedirs('../crawl', exist_ok=True) 
     if not os.path.exists(list_file):
         print('File not found:' + os.path.abspath(list_file))
         return
