@@ -63,7 +63,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         id = item['id']
         file_name = f'../crawl/{id}/{id}.html'
         if os.path.exists(file_name):
-            logging.info(f'    Skip exists file : {file_name}'
+            logging.info(f'    Skip exists file : {file_name}')
             continue
         while True:
             logging.info(f'    Crawling {file_name} ....')
