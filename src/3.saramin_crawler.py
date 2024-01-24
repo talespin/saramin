@@ -53,6 +53,17 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         "sec-ch-ua-mobile": '?0',
         'sec-ch-ua-platform': "macOS",
     }
+    params = {
+        'view_type': 'list',
+        'rec_idx': 'id',
+        'location': 'ts',
+        'searchType': 'search',
+        'paid_fl': 'n',
+        'inner_source': 'saramin',
+        'inner_medium': 'pattern',
+        'inner_campaign': 'SRI_050_ARA_MTRX_RCT',
+        'inner_term': '1',
+    }
     #세션 및 쿠키생성
     session = req.Session()
     base_url = 'https://www.saramin.co.kr'
@@ -67,7 +78,8 @@ def saram_crawler(list_file:str, overwrite:bool = False):
             continue
         while True:
             logging.info(f'    Crawling {file_name} ....')
-            res = session.get(f'https://www.saramin.co.kr/zf_user/jobs/relay/view?&rec_idx={id}', headers=headers, verify=False, cookies=cookies)
+            params.update({'rec_idx':id})
+            res = session.get(f'{base_url}/zf_user/jobs/relay/view', params=params, headers=headers, verify=False, cookies=cookies)
             sleep(5)
             if res.status_code == 200: break
             sleep(10)
