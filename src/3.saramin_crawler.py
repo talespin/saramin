@@ -25,9 +25,9 @@ import requests as req
 from random import random
 from time import sleep
 from bs4 import BeautifulSoup as bs
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+#from selenium import webdriver
+#from selenium.webdriver.chrome.service import Service
+#from selenium.webdriver.chrome.options import Options
 
 
 def saram_crawler(list_file:str, overwrite:bool = False):
