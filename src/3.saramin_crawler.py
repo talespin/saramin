@@ -85,6 +85,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
             sleep(10)
 
 
+
 if __name__=='__main__':
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) 
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
