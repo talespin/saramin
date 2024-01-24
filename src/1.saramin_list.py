@@ -108,12 +108,25 @@ def saramin_list():
     logging.info('crawl list saramin complete')
     #리스트 크롤완료
     logging.info('리스트 생서을 시작합니다.')
+    result = []
     for file_name in glob(f'../list/*_*'):
         with open(file_name, 'rt', encoding='utf-8') as fs:
             doc = bs(fs.read(), 'html.parser')
+        items = doc.find('section',{'class':'list_recruiting'}).find_all('div',{'class':'list_item'})
+        id, company_name, title, sector, work_place, career, education, end_dt = '', '', '', '', '' ,'' ,'' ,''
+        for item in items:
+            id = item.get('id')
+            company_name = item.find('div',{'class':'company_nm'}).text.strip().split('\n')[0]
+            tilte = item.find('div',{'class':'job_tit'}).find('a').get('title')
+            sector = [x.text.strip() for x in items[2].find('span',{'class':'job_sector'}).find_all('span')]
+            work_place = item.find('p',{'class':'work_place'}).text.strip()
+            career = item.find('p',{'class':'career'}).text.strip()
+            education = item.find('p',{'class':'education'}).text.strip()
+            end_dt = item.find('p',{'class':'support_detail'}).find('span',{'class':'date'}).text.strip()
+            result.append(dict(id=id, title=title, company_name=company_name, sector=sector, work_place=work_place, career=career, education=education, end_dt=end_dt))
     logging.info('make list file processing...')
     os.makedirs('../list', exist_ok=True)
-    pd.DataFrame(items).to_excel('../list/saramin.xlsx', index=False)
+    pd.DataFrame(result).to_excel('../list/saramin.xlsx', index=False)
     logging.info('complete!!!')
 
 
