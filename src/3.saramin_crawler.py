@@ -68,6 +68,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         while True:
             logging.info(f'    Crawling {file_name} ....')
             res = session.get(f'https://www.saramin.co.kr/zf_user/jobs/relay/view?&rec_idx={id}', headers=headers, verify=False, cookies=cookies)
+            sleep(5)
             if res.status_code == 200: break
             sleep(10)
 
