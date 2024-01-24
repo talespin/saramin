@@ -1,3 +1,35 @@
+#!/usr/bin/python
+"""
+:filename: 3.saramin_crawler.py
+:author: 최종환
+:last update: 2024.01.11
+ 
+:CHANGELOG:
+    ============== ========== ====================================
+    수정일            수정자        수정내용
+    ============== ========== ====================================
+    2024.01.11     최종환        최초생성
+    ============== ========== ====================================
+ 
+:desc:
+    saramin 옵션으로 지정한 json 파일을 읽어서 해당파일의 목록일 이용하여 컨텐츠를 크롤한다.
+ 
+"""
+import os
+import sys
+import urllib3
+import logging
+import argparse
+import pandas as pd
+import requests as req
+from random import random
+from time import sleep
+from bs4 import BeautifulSoup as bs
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+
 def saram_crawler(list_file:str, overwrite:bool = False):
     if not os.path.exists(list_file):
         print('File not found:' + os.path.abspath(list_file))
