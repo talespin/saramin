@@ -25,7 +25,7 @@ def main():
     if not os.path.exists('../list/saramin.xlsx'):
         print(os.path.abspath('../list/saramin.xlsx') + ' 파일이 없습니다. saramin_list.py 를 실행해서 먼저 리스트파일을 생성하세요')
         return
-    df = pd.read_excel('../list/jobkorea.xlsx')
+    df = pd.read_excel('../list/saramin.xlsx')
     if len(df) < split_cnt:
         print('건수보다 나누려는 수가 큽니다.')
         return
