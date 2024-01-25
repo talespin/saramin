@@ -32,7 +32,7 @@ from bs4 import BeautifulSoup as bs
 def saram_crawler(list_file:str, overwrite:bool = False):
     os.makedirs('../crawl', exist_ok=True) 
     if not os.path.exists(list_file):
-        print('File not found:' + os.path.abspath(list_file))
+        loggin.error('File not found:' + os.path.abspath(list_file))
         return
     items = pd.read_json(list_file).to_dict('records')
     base_url = 'https://www.saramin.co.kr'
@@ -79,13 +79,13 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         file_name = f'../crawl/{id}.html'
         data.update({'rec_idx':id})
         if os.path.exists(file_name):
-            print(f'    Skip file : {file_name}')
+            logging.info(f'    Skip file : {file_name}')
             continue
         res = req.post(f'{base_url}/zf_user/jobs/relay/view-ajax', cookies=cookies, headers=headers, data=data)
         if res.status_code != 200:
-            print(' error 발생')
+            logging.error(' error 발생')
             raise
-        print(f'crawling {id}')
+        logging.info(f'crawling {id}')
         with open(file_name, 'wt', encoding='utf-8') as fs:
             fs.write(res.content.decode('utf-8'))
         sleep(5)
@@ -94,6 +94,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
 if __name__=='__main__':
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) 
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.root.name=f"saramin_#{os.environ['id']}"
     parser = argparse.ArgumentParser(
                     prog='saramin crawler',
                     description='saramin 구인목록을 크롤합니다.')
