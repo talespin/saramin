@@ -85,6 +85,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         if res.status_code != 200:
             print(' error 발생')
             raise
+        print(f'crawling {id}')
         with open(file_name, 'wt', encoding='utf-8') as fs:
             fs.write(res.content.decode('utf-8'))
         sleep(5)
