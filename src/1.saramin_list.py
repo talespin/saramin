@@ -23,6 +23,7 @@ import urllib3
 import logging
 import pandas as pd
 import requests as req
+from glob import glob
 from time import sleep
 from urllib.parse import urlencode
 from bs4 import BeautifulSoup as bs
@@ -132,4 +133,5 @@ def saramin_list():
 
 if __name__=='__main__':
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.root.name='saramin_list'
     saramin_list()
