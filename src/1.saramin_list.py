@@ -110,7 +110,7 @@ def saramin_list():
     #리스트 크롤완료
     logging.info('리스트 생성을 시작합니다.')
     result = []
-    for file_name in glob(f'../list/*_*'):
+    for file_name in  [x for x in glob(f'../list/*_*') if not x.endswith('.json')]:
         try:     
             with open(file_name, 'rt', encoding='utf-8') as fs:
                 doc = bs(fs.read(), 'html.parser')
