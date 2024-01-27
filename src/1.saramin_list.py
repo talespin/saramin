@@ -108,7 +108,7 @@ def saramin_list():
                 fs.write(res.content.decode('utf-8'))
     logging.info('crawl list saramin complete')
     #리스트 크롤완료
-    logging.info('리스트 생서을 시작합니다.')
+    logging.info('리스트 생성을 시작합니다.')
     result = []
     for file_name in glob(f'../list/*_*'):
         with open(file_name, 'rt', encoding='utf-8') as fs:
