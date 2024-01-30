@@ -58,8 +58,8 @@ def main():
     file_names = glob('../crawl/*.html')
     pool = Pool(4)
     pool.map_async(parser, file_names)
-    pool.join()
     pool.close()
+    pool.join()
     logging.info('end parse html')
     logging.info(datetime.now())
 
