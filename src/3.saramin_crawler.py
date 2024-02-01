@@ -103,7 +103,7 @@ def get_iframe(id):
         doc = bs(fs.read(), 'html.parser')
     for iframe in doc.find_all('iframe'):
         try:
-            src = iframe.get('src')
+            src = base_url + iframe.get('src')
             file_name = f'../crawl/{id}/{hash(src)}'
             res = session.get(src, headers=headers, cookies=cookies)
             bs(res.content, 'html.parser')
