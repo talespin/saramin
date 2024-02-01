@@ -29,32 +29,34 @@ from bs4 import BeautifulSoup as bs
 #from selenium.webdriver.chrome.service import Service
 #from selenium.webdriver.chrome.options import Options
 
+base_url = 'https://www.saramin.co.kr'
+headers = {
+    'Accept': 'text/html, */*; q=0.01',
+    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+    'Connection': 'keep-alive',
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'Origin': 'https://www.saramin.co.kr',
+    'Referer': 'https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=47370025&recommend_ids=eJxdjsENQzEIQ6fpHYOB%2BNxBsv8Wza%2FUJKo4PRts2AG36jmAV7%2FZNEfFlPkfTn4FZ6ix16PCBxf2D0k%2FOExVZ1mpzp0dOTS0XZeCx7VK1xW1WkMb6blmI0Dj9QZrKRs9O7vOLYCR57YSfZLd0ci7KMT7DaU9%2BAHvZUQ%2F&view_type=list&gz=1&t_ref_content=general&t_ref=area_recruit&relayNonce=6086dd278acbb29270a8&immediately_apply_layer_open=n',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-origin',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'X-Requested-With': 'XMLHttpRequest',
+    'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+}
+session = req.Session()
+res = session.get(base_url, headers=headers, verify=False)
+cookies = dict(res.cookies)
+
+
 def saram_crawler(list_file:str, overwrite:bool = False):
     os.makedirs('../crawl', exist_ok=True) 
     if not os.path.exists(list_file):
-        loggin.error('File not found:' + os.path.abspath(list_file))
+        logging.error('File not found:' + os.path.abspath(list_file))
         return
     items = pd.read_json(list_file).to_dict('records')
-    base_url = 'https://www.saramin.co.kr'
-    headers = {
-        'Accept': 'text/html, */*; q=0.01',
-        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Connection': 'keep-alive',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'Origin': 'https://www.saramin.co.kr',
-        'Referer': 'https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=47370025&recommend_ids=eJxdjsENQzEIQ6fpHYOB%2BNxBsv8Wza%2FUJKo4PRts2AG36jmAV7%2FZNEfFlPkfTn4FZ6ix16PCBxf2D0k%2FOExVZ1mpzp0dOTS0XZeCx7VK1xW1WkMb6blmI0Dj9QZrKRs9O7vOLYCR57YSfZLd0ci7KMT7DaU9%2BAHvZUQ%2F&view_type=list&gz=1&t_ref_content=general&t_ref=area_recruit&relayNonce=6086dd278acbb29270a8&immediately_apply_layer_open=n',
-        'Sec-Fetch-Dest': 'empty',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Site': 'same-origin',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'X-Requested-With': 'XMLHttpRequest',
-        'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-    }
-    session = req.Session()
-    res = session.get(base_url, headers=headers, verify=False)
-    cookies = dict(res.cookies)
     data = {
         'rec_idx': '47107294',
         'rec_seq': '2',
@@ -76,19 +78,40 @@ def saram_crawler(list_file:str, overwrite:bool = False):
     }
     for item in items:
         id = item['id'].split('-')[-1]
-        file_name = f'../crawl/{id}.html'
+        file_name = f'../crawl/{id}/{id}.html'
         data.update({'rec_idx':id})
         if os.path.exists(file_name):
             logging.info(f'    Skip file : {file_name}')
-            continue
-        res = req.post(f'{base_url}/zf_user/jobs/relay/view-ajax', cookies=cookies, headers=headers, data=data)
-        if res.status_code != 200:
-            logging.error(' error 발생')
-            raise
-        logging.info(f'crawling {id}')
-        with open(file_name, 'wt', encoding='utf-8') as fs:
-            fs.write(res.content.decode('utf-8'))
-        sleep(5)
+            #continue
+        else:
+            res = req.post(f'{base_url}/zf_user/jobs/relay/view-ajax', cookies=cookies, headers=headers, data=data)
+            if res.status_code != 200:
+                logging.error(' error 발생')
+                raise
+            logging.info(f'crawling {id}')
+            with open(file_name, 'wt', encoding='utf-8') as fs:
+                fs.write(res.content.decode('utf-8'))
+            sleep(5)
+        get_iframe(id)
+
+
+def get_iframe(session, id):
+    file_name = f'../crawl/{id}/{id}.html'
+    doc = None
+    with open(file_name, 'rt', encoding='utf-8') as fs:
+        doc = bs(fs.read(), 'html.parser')
+    for iframe in doc.find_all('iframe'):
+        try:
+            src = iframe.get('src')
+            file_name = f'../crawl/{id}/{hash(src)}'
+            res = session.get(src, headers=headers, cookies=cookies)
+            bs(res.content, 'html.parser')
+            with open(file_name, 'wt', encoding='utf-8') as fs:
+                fs.write(res.content.decode('utf-8'))
+            sleep(2)
+        except:
+            logging.error(f' get iframe fail:{file_name}')
+
 
 
 if __name__=='__main__':
