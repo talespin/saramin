@@ -95,7 +95,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
         get_iframe(id)
 
 
-def get_iframe(session, id):
+def get_iframe(id):
     file_name = f'../crawl/{id}/{id}.html'
     doc = None
     with open(file_name, 'rt', encoding='utf-8') as fs:
