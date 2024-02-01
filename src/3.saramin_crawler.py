@@ -78,7 +78,7 @@ def saram_crawler(list_file:str, overwrite:bool = False):
     }
     for item in items:
         id = item['id'].split('-')[-1]
-        os.makedirs(f'../crawl/{id}')
+        os.makedirs(f'../crawl/{id}', exist_ok=True)
         file_name = f'../crawl/{id}/{id}.html'
         data.update({'rec_idx':id})
         if os.path.exists(file_name):
