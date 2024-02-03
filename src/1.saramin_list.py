@@ -51,6 +51,7 @@ params = {
 }
 
 
+
 def saramin_list():
     logging.info('start crawl list saramin')
     #지역별 코드
@@ -97,7 +98,7 @@ def saramin_list():
     for area in area_cnt:
         params.update({'loc_mcd':area['id']})
         for page in range(1, area['page_size']+1):
-            file_name = f'../list/' + area['id'] + f'_{page}'
+            file_name = f'../list/' + area['id'] + f'_{page}.page'
             params.update({'page':page})
             if os.path.exists(file_name):
                 logging.info(f'    Skip exists file: {file_name}')
@@ -110,7 +111,7 @@ def saramin_list():
     #리스트 크롤완료
     logging.info('리스트 생성을 시작합니다.')
     result = []
-    for file_name in  [x for x in glob(f'../list/*_*') if not x.endswith('.json')]:
+    for file_name in  [x for x in glob(f'../list/*_*.page') if not x.endswith('.json')]:
         try:     
             with open(file_name, 'rt', encoding='utf-8') as fs:
                 doc = bs(fs.read(), 'html.parser')
