@@ -12,7 +12,7 @@ for file_name in glob('../result/*.json'):
         print(f'parse error:{file_name}')
 
 df = pd.DataFrame(result)
-df.to_csv('../result/saramin.csv')
+df.to_csv('../result/saramin.csv', encoding='utf-8')
 df.to_excel('../result/saramin.xlsx')
 
 
