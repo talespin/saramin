@@ -51,14 +51,14 @@ res = session.get(base_url, headers=headers, verify=False)
 cookies = dict(res.cookies)
 
 
-def saram_crawler(id:str, url:bool, display:None):
+def saram_crawler(id:str, url:str=None, display:str=None):
     file_name = f'../crawl/{id}/{id}.html'
     os.makedirs(f'../crawl/{id}', exist_ok=True) 
     if os.path.exists(file_name):
         logging.error(f'    Skip file : {file_name}')
         return
     data = {
-        'rec_idx': '47107294',
+        'rec_idx': id,
         'rec_seq': '2',
         'utm_source': '',
         'utm_medium': '',
@@ -76,7 +76,6 @@ def saram_crawler(id:str, url:bool, display:None):
         'dpId': '',
         'recommendRecIdx': '',
     }
-    data.update({'rec_idx':id})
     res = req.post(f'{base_url}/zf_user/jobs/relay/view-ajax', cookies=cookies, headers=headers, data=data)
     if res.status_code != 200:
         logging.error(' error 발생')

@@ -25,7 +25,7 @@ def main():
     items = pd.read_excel('../list/saramin.xlsx').to_dict('records')
     lst = []
     for i, item in enumerate(items):
-        id, url = item['id'], item['url']
+        id, url = item['id'], ''
         if os.path.exists(f'../crawl/{id}/{id}.html'): continue
         server = (i % 10) +1
         pgm = f'rsh crawler{server} \'export DISPLAY={display};cd /mnt/work/saramin/src;/usr/share/python-3.11/bin/python 3.saramin_crawler_one.py -i {id} -u "{url}" -d "{display}"\''
