@@ -55,7 +55,7 @@ def parser(file_name:str) -> None:
 def main():
     logging.info('start parse html')
     logging.info(datetime.now())
-    file_names = glob('../crawl/*.html')
+    file_names = glob('../crawl/*/*.html')
     pool = Pool(4)
     pool.map_async(parser, file_names)
     pool.close()
