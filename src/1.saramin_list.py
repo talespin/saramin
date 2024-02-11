@@ -29,30 +29,14 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup as bs
 
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-params = {
-    'page': '1',
-    'loc_mcd': '101000',
-    'search_optional_item': 'n',
-    'search_done': 'y',
-    'panel_count': 'y',
-    'preview': 'y',
-    'isAjaxRequest': '1',
-    'page_count': '100',
-    'sort': 'RL',
-    'type': 'domestic',
-    'is_param': '1',
-    'isSearchResultEmpty': '1',
-    'isSectionHome': '0',
-    'searchParamCount': '1',
-    'tab': 'domestic',
-}
-
-
-
 def saramin_list():
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.root.name='saramin_list'
+    ip = None
+    while True:
+        ip = input('>>>크롤작업을 새로 시작하려면 Y  이어서 하려면 N 를 입력하세요\n')
+        if ip in ['Y','N']: break
+    if ip == 'Y': [os.remove(x) for x in glob('../list/*')]
     logging.info('start crawl list saramin')
     #지역별 코드
     #with open('./local_cd.json', encoding='UTF8') as json_file:
@@ -75,6 +59,23 @@ def saramin_list():
         'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"',
         "sec-ch-ua-mobile": '?0',
         'sec-ch-ua-platform': "macOS",
+    }
+    params = {
+        'page': '1',
+        'loc_mcd': '101000',
+        'search_optional_item': 'n',
+        'search_done': 'y',
+        'panel_count': 'y',
+        'preview': 'y',
+        'isAjaxRequest': '1',
+        'page_count': '100',
+        'sort': 'RL',
+        'type': 'domestic',
+        'is_param': '1',
+        'isSearchResultEmpty': '1',
+        'isSectionHome': '0',
+        'searchParamCount': '1',
+        'tab': 'domestic',
     }
     #세션 및 쿠키생성
     page_count = 100
@@ -103,6 +104,7 @@ def saramin_list():
             if os.path.exists(file_name):
                 logging.info(f'    Skip exists file: {file_name}')
                 continue
+            logging.info(f'crawl {area["name"]} {page}/{area["page_size"]}')
             sleep(5)
             res = session.get(f'{base_url}/zf_user/jobs/list/domestic', params=params, cookies=cookies, headers=headers)
             with open(file_name, 'wt', encoding='utf-8') as fs:
@@ -137,6 +139,5 @@ def saramin_list():
 
 
 if __name__=='__main__':
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    logging.root.name='saramin_list'
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     saramin_list()
