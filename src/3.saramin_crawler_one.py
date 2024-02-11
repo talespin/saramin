@@ -97,7 +97,7 @@ def get_iframe(id):
         try:
             src = base_url + iframe.get('src')
             file_name = f'../crawl/{id}/{hash(src)}'
-            res = session.get(src, headers=headers, cookies=cookies)
+            res = session.get(src, headers=headers, cookies=cookies, verify=False)
             bs(res.content, 'html.parser')
             with open(file_name, 'wt', encoding='utf-8') as fs:
                 fs.write(res.content.decode('utf-8'))
