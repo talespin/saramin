@@ -1,12 +1,31 @@
+#!/usr/bin/python
+"""
+:filename: 3.saramin_crawler_master.py
+:author: 최종환
+:last update: 2024.01.20
+ 
+:CHANGELOG:
+    ============== ========== ====================================
+    수정일            수정자        수정내용
+    ============== ========== ====================================
+    2024.01.20     bum        최초생성
+    ============== ========== ====================================
+ 
+:desc:
+    saramin site 의 지역별 채용정보 크롤 목록 생성
+ 
+"""
+import os
 import pandas as pd
 from multiprocessing import Pool
-
 
 
 def main():
     items = pd.read_excel('../list/saramin.xlsx').to_dict('records')
     lst = []
-    for item in items:
+    for i, item in enumerate(items):
+        if os.path.exists(f'../crawl/{id}/{id}.html'): continue
+        server = (i % 10) +1
         pgm = f'rsh crawler{server} \'export DISPLAY={os.environ["DISPLAY"]};cd /mnt/work/saramin/src;/usr/share/python-3.11/bin/python 3.saramin_crawler_one.py -i {id} -u "{url}" -d "{display}"\''
         lst.append(pgm)
     pool = Pool(10)
