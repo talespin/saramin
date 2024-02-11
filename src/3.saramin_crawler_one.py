@@ -17,6 +17,7 @@
 """
 import os
 import sys
+import socket
 import urllib3
 import logging
 import argparse
@@ -109,7 +110,11 @@ def get_iframe(id):
 if __name__=='__main__':
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) 
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    logging.root.name=f"saramin_#{os.environ['id']}"
+    logging.root.name=f"saramin_#{socket.gethostname()}"
+    try:
+        logging.root.name=f"saramin_#{os.environ['id']}"
+    except:
+        pass
     parser = argparse.ArgumentParser(
                     prog='saramin crawler',
                     description='saramin 구인목록을 크롤합니다.')
