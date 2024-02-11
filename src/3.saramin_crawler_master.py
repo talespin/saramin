@@ -16,11 +16,13 @@
  
 """
 import os
+import urllib3
 import pandas as pd
 from multiprocessing import Pool
 
 
 def main():
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     display = os.environ["DISPLAY"]
     items = pd.read_excel('../list/saramin.xlsx').to_dict('records')
     lst = []
