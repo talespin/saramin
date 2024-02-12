@@ -30,6 +30,9 @@ from bs4 import BeautifulSoup as bs
 #from selenium.webdriver.chrome.service import Service
 #from selenium.webdriver.chrome.options import Options
 
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) 
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 base_url = 'https://www.saramin.co.kr'
 headers = {
     'Accept': 'text/html, */*; q=0.01',
@@ -47,6 +50,7 @@ headers = {
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
 }
+
 session = req.Session()
 res = session.get(base_url, headers=headers, verify=False)
 cookies = dict(res.cookies)
