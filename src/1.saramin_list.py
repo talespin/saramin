@@ -134,7 +134,8 @@ def saramin_list():
             raise
     logging.info('make list file processing...')
     os.makedirs('../list', exist_ok=True)
-    pd.DataFrame(result).to_excel('../list/saramin.xlsx', index=False)
+    #pd.DataFrame(result).to_excel('../list/saramin.xlsx', index=False)
+    pd.DataFrame(result).to_csv('../list/saramin.csv', index=False)
     logging.info('complete!!!')
 
 

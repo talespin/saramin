@@ -24,7 +24,8 @@ from multiprocessing import Pool
 def main():
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     display = os.environ["DISPLAY"]
-    items = pd.read_excel('../list/saramin.xlsx').to_dict('records')
+    #items = pd.read_excel('../list/saramin.xlsx').to_dict('records')
+    items = pd.read_csv('../list/saramin.csv').to_dict('records')
     lst = []
     for i, item in enumerate(items):
         id, url = item['id'], ''
