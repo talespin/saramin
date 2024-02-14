@@ -60,7 +60,7 @@ def saram_crawler(id:str, url:str=None, display:str=None):
     file_name = f'../crawl/{id}/{id}.html'
     os.makedirs(f'../crawl/{id}', exist_ok=True) 
     if os.path.exists(file_name):
-        logging.error(f'    Skip file : {file_name}')
+        logging.info(f'    Skip file : {file_name}')
         return
     data = {
         'rec_idx': id,
