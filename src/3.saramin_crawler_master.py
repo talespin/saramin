@@ -30,7 +30,7 @@ def main():
     for i, item in enumerate(items):
         id, url = item['id'], ''
         if os.path.exists(f'../crawl/{id}/{id}.html'): continue
-        server = (i % 10) +1
+        server = (i % 5) +1
         pgm = f'rsh crawler{server} \'export DISPLAY={display};cd /mnt/work/saramin/src;/usr/share/python-3.11/bin/python 3.saramin_crawler_one.py -i {id} -u "{url}" -d "{display}"\''
         lst.append(pgm)
     print(f'total count:{len(items)},  exists count:{len(items) - len(lst)}, target count:{len(lst)}')
